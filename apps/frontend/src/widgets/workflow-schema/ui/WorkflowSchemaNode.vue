@@ -1,30 +1,32 @@
 <script setup lang="ts">
 import { Handle } from '@vue-flow/core'
+import { useCssModule } from 'vue'
 
 defineProps<{
   data: { label: string, color?: string, selected?: boolean }
 }>()
+
+const styles = useCssModule()
 </script>
 
 <template>
   <div
-    class="schema-node"
-    :class="{ 'schema-node--selected': data.selected }"
+    :class="[styles['schema-node'], { [styles['schema-node--selected']]: data.selected }]"
     :style="{ borderColor: data.color || '#6b7280', color: data.color || 'white' }"
   >
-    <span class="handle handle-top-left" />
-    <span class="handle handle-top-right" />
-    <span class="handle handle-bottom-left" />
-    <span class="handle handle-bottom-right" />
-    <span class="handle handle-top-center" />
-    <span class="handle handle-bottom-center" />
+    <span :class="[styles.handle, styles['handle-top-left']]" />
+    <span :class="[styles.handle, styles['handle-top-right']]" />
+    <span :class="[styles.handle, styles['handle-bottom-left']]" />
+    <span :class="[styles.handle, styles['handle-bottom-right']]" />
+    <span :class="[styles.handle, styles['handle-top-center']]" />
+    <span :class="[styles.handle, styles['handle-bottom-center']]" />
 
     <Handle
       type="target"
       :position="'left' as any"
       :style="{ opacity: 0, pointerEvents: 'none', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }"
     />
-    <span class="schema-node-label">{{ data.label }}</span>
+    <span :class="styles['schema-node-label']">{{ data.label }}</span>
     <Handle
       type="source"
       :position="'right' as any"
@@ -33,7 +35,7 @@ defineProps<{
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style module lang='scss'>
 .schema-node {
   display: flex;
   align-items: center;

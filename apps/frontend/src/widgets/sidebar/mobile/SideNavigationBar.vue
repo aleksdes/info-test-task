@@ -4,7 +4,7 @@ import type {
   SideNavigationBarProps,
   SideNavigationBarSlots,
 } from './side-navigation-bar'
-import { useTemplateRef, watch } from 'vue'
+import { useCssModule, useTemplateRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 defineOptions({
@@ -16,6 +16,7 @@ withDefaults(defineProps<SideNavigationBarProps>(), {})
 defineEmits<SideNavigationBarEmits>()
 defineSlots<SideNavigationBarSlots>()
 
+const styles = useCssModule()
 const sideNavigationBarMenuRef = useTemplateRef('sideNavigationBarMenuRef')
 
 const route = useRoute()
@@ -52,18 +53,18 @@ watch(route, () => {
 </script>
 
 <template>
-  <aside id="sideNavigationBar" class="side-navigation-bar">
+  <aside id="sideNavigationBar" :class="styles['side-navigation-bar']">
     <div id="sideNavigationBarHeader" />
 
     <slot name="prepend" />
 
-    <div ref="sideNavigationBarMenuRef" class="side-navigation-bar__menu">
+    <div ref="sideNavigationBarMenuRef" :class="styles['side-navigation-bar__menu']">
       <slot />
     </div>
   </aside>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* Скрываем скроллбар для меню */
 ::-webkit-scrollbar {
   width: 4px;
@@ -88,7 +89,9 @@ watch(route, () => {
   border-color: #4b5563;
   --p-divider-border-color: rgba(255, 255, 255, 0.2);
 }
+</style>
 
+<style module lang="scss">
 .side-navigation-bar {
   --side-navigation-bar__height: 80px;
   --side-navigation-bar__bg-color: var(--color-white);

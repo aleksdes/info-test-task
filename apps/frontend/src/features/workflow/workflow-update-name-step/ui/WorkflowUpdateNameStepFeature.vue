@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import type { WorkflowStep } from '@/shared/generated/api'
+import type {
+  IWorkflowUpdateNameStepFeatureEmits,
+  IWorkflowUpdateNameStepFeatureProps,
+} from './workflow-update-name-step-feature'
 import { toTypedSchema } from '@vee-validate/zod'
 import Button from 'primevue/button'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import { Field, Form } from 'vee-validate'
-import { onMounted, ref, toRefs } from 'vue'
+import { onMounted, ref, toRefs, useCssModule } from 'vue'
 import { z } from '@/shared/lib/zod-validate'
 import { useWorkflowUpdateNameStep } from '../model'
 
-interface IProps {
-  step: WorkflowStep
-  workflowName: string
-}
-
-interface IEmits {
-  (e: 'resetUpdate'): void
-}
-
-const props = withDefaults(defineProps<IProps>(), {})
-const emits = defineEmits<IEmits>()
+const props = withDefaults(defineProps<IWorkflowUpdateNameStepFeatureProps>(), {})
+const emits = defineEmits<IWorkflowUpdateNameStepFeatureEmits>()
+const styles = useCssModule()
 
 const { step, workflowName } = toRefs(props)
 const {
@@ -66,7 +61,7 @@ onMounted(() => {
 <template>
   <Form
     v-slot="{ meta }"
-    class="step-form"
+    :class="styles['step-form']"
     :validation-schema="validationSchema"
     @submit="onUpdateNameStep"
   >
@@ -131,7 +126,7 @@ onMounted(() => {
   </Form>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .step-form {
   display: flex;
   flex-direction: row;

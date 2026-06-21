@@ -4,7 +4,7 @@ import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { VueFlow } from '@vue-flow/core'
 import { storeToRefs } from 'pinia'
-import { computed, markRaw } from 'vue'
+import { computed, markRaw, useCssModule } from 'vue'
 import { useWorkflow } from '@/entities/workflow'
 import { useWorkflowStepCoord } from '@/features/workflow/workflow-step-coord/index.ts'
 import WorkflowEdge from './WorkflowEdge.vue'
@@ -27,6 +27,8 @@ const selectedIndex = computed(() => selectedStep?.value?.initialIndex ?? null)
 const nodeTypes = {
   workflow: markRaw(WorkflowSchemaNode),
 }
+
+const styles = useCssModule()
 
 const edgeTypes = {
   'workflow-edge': markRaw(WorkflowEdge),
@@ -89,7 +91,7 @@ function onNodeDragStop(data: NodeDragEvent) {
 </script>
 
 <template>
-  <div class="workflow-schema-wrapper">
+  <div :class="styles['workflow-schema-wrapper']">
     <VueFlow
       :nodes="nodes as any"
       :edges="edges"
@@ -108,7 +110,7 @@ function onNodeDragStop(data: NodeDragEvent) {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .workflow-schema-wrapper {
   height: 100%;
   width: 100%;

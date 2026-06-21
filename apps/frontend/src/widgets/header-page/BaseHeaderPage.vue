@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { HeaderPageProps, HeaderPageSlots } from './base-header-page'
 import { useWindowSize } from '@vueuse/core'
-import { toRefs } from 'vue'
+import { toRefs, useCssModule } from 'vue'
 import { UserMenuSettings } from '@/features/user-menu-settings'
 import { HeaderPage } from '@/shared/ui'
 import { LogotypeGray } from '@/shared/ui/theme/icons'
@@ -23,6 +23,7 @@ const {
   showUserMenu,
 } = toRefs(props)
 const { width: widthWindow } = useWindowSize()
+const styles = useCssModule()
 </script>
 
 <template>
@@ -47,7 +48,7 @@ const { width: widthWindow } = useWindowSize()
         v-else
         class="flex items-center"
       >
-        <LogotypeGray class="logotype" />
+        <LogotypeGray :class="styles.logotype" />
       </div>
     </template>
     <template #append>
@@ -62,7 +63,7 @@ const { width: widthWindow } = useWindowSize()
   </HeaderPage>
 </template>
 
-<style lang="scss" scoped>
+<style module lang="scss">
 .logotype {
   height: pxToRem(40px);
   width: auto;

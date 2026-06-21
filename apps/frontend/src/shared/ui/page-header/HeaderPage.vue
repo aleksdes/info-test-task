@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HeaderPageProps, HeaderPageSlots } from './page-header'
+import { useCssModule } from 'vue'
 
 defineOptions({
   name: 'HeaderPage',
@@ -10,17 +11,18 @@ const props = withDefaults(defineProps<HeaderPageProps>(), {
 })
 
 defineSlots<HeaderPageSlots>()
+
+const styles = useCssModule()
 </script>
 
 <template>
   <div
     id="headerPage"
-    class="header-page"
-    :class="{ 'header-page--sticky': sticky }"
+    :class="[styles['header-page'], { [styles['header-page--sticky']]: sticky }]"
   >
-    <div class="header-page__container">
-      <div class="header-page__box-title">
-        <h1 v-if="props.title" class="">
+    <div :class="styles['header-page__container']">
+      <div :class="styles['header-page__box-title']">
+        <h1 v-if="props.title">
           {{ props.title }}
         </h1>
 
@@ -34,13 +36,13 @@ defineSlots<HeaderPageSlots>()
       <slot name="append" />
     </div>
 
-    <div v-if="$slots['append-outer']" class="header-page__append">
+    <div v-if="$slots['append-outer']" :class="styles['header-page__append']">
       <slot name="append-outer" />
     </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style module lang="scss">
 @use 'sass:color';
 
 .header-page {

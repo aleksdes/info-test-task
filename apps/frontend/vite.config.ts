@@ -12,11 +12,7 @@ import { VitePWA } from 'vite-plugin-pwa'
  * @see https://rolldown.rs/in-depth/manual-code-splitting
  */
 const vendorCodeSplittingGroups = [
-  /** maxSize — чтобы ни один чанк не превышал лимит предупреждения Vite (~500kb) */
-  // { name: 'primevue', test: /node_modules[\\/](primevue|@primeuix|primeicons)/, priority: 50 },//возникает ошибка в продакшене - несовместимость с Vite8 + Rolldown
   { name: 'highcharts', test: /node_modules[\\/]highcharts/, priority: 50, maxSize: 450_000 },
-  { name: 'quill', test: /node_modules[\\/](@vueup[\\/]vue-quill|quill)/, priority: 50 },
-  { name: 'interactjs', test: /node_modules[\\/]interactjs/, priority: 45 },
   { name: 'vueuse', test: /node_modules[\\/]@vueuse/, priority: 40 },
   { name: 'vue-runtime', test: /node_modules[\\/](vue[\\/]|vue-router[\\/]|pinia[\\/])/, priority: 42 },
   { name: 'axios', test: /node_modules[\\/](axios-retry|axios)[\\/]/, priority: 30 },
@@ -26,7 +22,6 @@ const vendorCodeSplittingGroups = [
   { name: 'vee-validate', test: /node_modules[\\/](vee-validate|@vee-validate)/, priority: 30 },
   { name: 'i18n', test: /node_modules[\\/](i18next|zod-i18n-map)/, priority: 30 },
   { name: 'lucide', test: /node_modules[\\/]@lucide[\\/]vue/, priority: 30 },
-  { name: 'sortable', test: /node_modules[\\/](sortablejs|vue-draggable-next)/, priority: 30 },
   { name: 'vendor', test: /node_modules/, priority: 1 },
 ]
 

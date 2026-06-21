@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { WorkflowStep } from '@/shared/generated/api'
+import type { IWorkflowStepProps } from './workflow-step'
 import { toRefs, useCssModule } from 'vue'
 
-const props = withDefaults(defineProps<{
-  stepData?: WorkflowStep | null
-}>(), {
+const props = withDefaults(defineProps<IWorkflowStepProps>(), {
   stepData: null,
 })
 

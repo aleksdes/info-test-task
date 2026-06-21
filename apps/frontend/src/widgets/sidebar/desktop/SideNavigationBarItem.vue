@@ -4,7 +4,7 @@ import type {
   SideNavigationBarItemSlots,
   SideNavigationBarItemState,
 } from './side-navigation-bar'
-import { computed, toRefs } from 'vue'
+import { computed, toRefs, useCssModule } from 'vue'
 import { useLink, useRoute } from 'vue-router'
 
 const props = withDefaults(defineProps<SideNavigationBarItemProps>(), {
@@ -47,6 +47,8 @@ const isActive = computed(() => {
 })
 const isExactActive = computed(() => isExactActiveProps.value || routeIsExactActive.value)
 
+const styles = useCssModule()
+
 const sharedState: SideNavigationBarItemState = {
   isActive,
   isExactActive,
@@ -57,10 +59,10 @@ const sharedState: SideNavigationBarItemState = {
 
 <template>
   <a
-    class="side-navigation-bar-item rounded-full p-3 py-2 h-10  transition-colors"
-    :class="{
-      'side-navigation-bar-item--active': isActive || isExactActive || isParentActive,
-    }"
+    class="rounded-full p-3 py-2 h-10 transition-colors" :class="[
+      styles['side-navigation-bar-item'],
+      { [styles['side-navigation-bar-item--active']]: isActive || isExactActive || isParentActive },
+    ]"
     :href="href"
     @click="navigate"
   >
@@ -68,20 +70,20 @@ const sharedState: SideNavigationBarItemState = {
       :title="dataRoute.label"
       class="flex items-center group"
     >
-      <span v-if="!!$slots.icon" class="side-navigation-bar-item__icon">
+      <span v-if="!!$slots.icon" :class="styles['side-navigation-bar-item__icon']">
         <slot name="icon" v-bind="sharedState" />
       </span>
 
       <i
         v-else-if="dataRoute.icon && typeof dataRoute.icon === 'string'"
-        class="side-navigation-bar-item__icon text-base shrink-0" :class="[dataRoute.icon]"
+        class="text-base shrink-0" :class="[styles['side-navigation-bar-item__icon'], dataRoute.icon]"
       />
 
       <component
         :is="dataRoute.icon"
         v-else
         :key="dataRoute.icon"
-        class="shrink-0 side-navigation-bar-item__icon"
+        class="shrink-0" :class="[styles['side-navigation-bar-item__icon']]"
       />
 
       <span v-if="!mini" class="ml-3 font-medium text-base truncate font-roboto">
@@ -93,7 +95,7 @@ const sharedState: SideNavigationBarItemState = {
   </a>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .side-navigation-bar-item {
   --icon-size: 18px;
   --side-navigation-bar-item__bg-color: transparent;

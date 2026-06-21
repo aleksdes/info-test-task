@@ -4,7 +4,7 @@ import type {
   SideNavigationBarProps,
   SideNavigationBarSlots,
 } from './side-navigation-bar'
-import { toRefs } from 'vue'
+import { toRefs, useCssModule } from 'vue'
 
 defineOptions({
   name: 'SideNavigationBar',
@@ -18,33 +18,36 @@ defineEmits<SideNavigationBarEmits>()
 defineSlots<SideNavigationBarSlots>()
 
 const { rail } = toRefs(props)
+const styles = useCssModule()
 </script>
 
 <template>
   <aside
     id="sideNavigationBar"
-    class="side-navigation-bar h-screen flex flex-col overflow-hidden shrink-0"
-    :class="rail ? 'min-w-[230px]' : 'w-auto'"
+    class="h-screen flex flex-col overflow-hidden shrink-0" :class="[
+      styles['side-navigation-bar'],
+      rail ? 'min-w-[230px]' : 'w-auto',
+    ]"
   >
-    <div class="side-navigation-bar__container">
+    <div :class="styles['side-navigation-bar__container']">
       <slot name="rail-button" />
 
-      <div class="side-navigation-bar__leading">
+      <div :class="styles['side-navigation-bar__leading']">
         <slot name="leading" />
       </div>
 
-      <div class="side-navigation-bar__menu">
+      <div :class="styles['side-navigation-bar__menu']">
         <slot />
       </div>
 
-      <div class="side-navigation-bar__bottom">
+      <div :class="styles['side-navigation-bar__bottom']">
         <slot name="bottom" />
       </div>
     </div>
   </aside>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* Скрываем скроллбар для меню */
 ::-webkit-scrollbar {
   width: 4px;
@@ -62,7 +65,9 @@ const { rail } = toRefs(props)
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+</style>
 
+<style module lang="scss">
 .side-navigation-bar {
   --side-bar__background-color: #aa8800;
 

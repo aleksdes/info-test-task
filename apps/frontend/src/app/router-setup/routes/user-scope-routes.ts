@@ -11,7 +11,7 @@ export const HomeRoute = routeCompositionFactory({
 export const SettingsRoute = routeCompositionFactory({
   path: 'settings',
   name: 'settings',
-  component: () => import('@/pages/user/home/HomePage.vue'),
+  component: () => import('@/pages/user/settings/SettingsPage.vue'),
 })
 
 export const userGroupRoutes: RouteRecordRaw = {

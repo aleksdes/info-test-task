@@ -37,15 +37,15 @@ const userDesc = computed(() => currentUser.value?.fullName || currentUser.value
           <Avatar
             :label="currentUser?.avatar ? '' : userInitials"
             :image="currentUser?.avatar"
-            class="user-avatar shrink-0"
+            class="shrink-0" :class="[$style['user-avatar']]"
             style="background-color: rgba(0, 0, 0, 0.2); color: black"
             shape="circle"
           />
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium  truncate">
+            <p class="text-sm font-medium truncate">
               {{ displayName }}
             </p>
-            <p v-if="userDesc" class="text-xs  truncate">
+            <p v-if="userDesc" class="text-xs truncate">
               {{ userDesc }}
             </p>
           </div>
@@ -65,21 +65,21 @@ const userDesc = computed(() => currentUser.value?.fullName || currentUser.value
     </Drawer>
 
     <div
-      class="user-menu-trigger flex items-center gap-2 cursor-pointer"
+      class="flex items-center gap-2 cursor-pointer" :class="[$style['user-menu-trigger']]"
       @click="visible = true"
     >
       <Avatar
         :label="currentUser?.avatar ? '' : userInitials"
         :image="currentUser?.avatar"
-        class="user-avatar shrink-0"
+        class="shrink-0" :class="[$style['user-avatar']]"
         style="background-color: rgba(0, 0, 0, 0.2); color: black"
         shape="circle"
       />
-      <div v-if="widthWindow >= 1024 && !mini" class="user-avatar__info flex-1 min-w-0">
-        <p class="user-avatar__title font-medium truncate">
+      <div v-if="widthWindow >= 1024 && !mini" class="flex-1 min-w-0" :class="[$style['user-avatar__info']]">
+        <p :class="$style['user-avatar__title']" class="font-medium truncate">
           {{ displayName }}
         </p>
-        <p v-if="userDesc" class="user-avatar__desc truncate">
+        <p v-if="userDesc" :class="$style['user-avatar__desc']" class="truncate">
           {{ userDesc }}
         </p>
       </div>
@@ -87,14 +87,14 @@ const userDesc = computed(() => currentUser.value?.fullName || currentUser.value
   </div>
 </template>
 
-<style lang="scss">
+<style module lang="scss">
 .user-menu-trigger {
   --user-avatar__color: white;
 }
 
 .user-avatar {
-  width: pxToRem(42px);
-  height: pxToRem(42px);
+  width: pxToRem(42px) !important;
+  height: pxToRem(42px) !important;
 
   &__info {
     text-overflow: ellipsis;

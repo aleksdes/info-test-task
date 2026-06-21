@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, nextTick, onMounted, onUnmounted, ref, useCssModule, watch } from 'vue'
 import { useWorkflow, WorkflowStep as WorkflowStepItem } from '@/entities/workflow'
 import { WorkflowCreateStepFeature } from '@/features/workflow/workflow-crete-step'
 import { WorkflowRemoveStepFeature } from '@/features/workflow/workflow-remove-step'
@@ -72,6 +72,7 @@ function stepNext(index: number): WorkflowStep | null {
   return step
 }
 
+const styles = useCssModule()
 const wrapperRef = ref<HTMLElement | null>(null)
 
 function measureTransitions() {
@@ -148,17 +149,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="workflow-section-wrapper">
-    <div class="workflow-section-wrapper__header">
+  <div :class="styles['workflow-section-wrapper']">
+    <div :class="styles['workflow-section-wrapper__header']">
       <p>Структура рабочего процесса</p>
 
       <WorkflowCreateStepFeature
-        :workflow="workflowData || ''"
+        :workflow="workflowData"
         @refresh-workflow="onRefetchWorkflow"
       />
     </div>
 
-    <div ref="wrapperRef" class="workflow-table-wrapper">
+    <div ref="wrapperRef" :class="styles['workflow-table-wrapper']">
       <DataTable
         ref="wrapperRef"
         v-model:selection="selectedStep"
@@ -202,14 +203,14 @@ onUnmounted(() => {
           header="Переходы"
         >
           <template #body="slotProps">
-            <div class="workflow-table__transitions">
+            <div :class="styles['workflow-table__transitions']">
               <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
-                <span class="workflow-table__transitions-item">
+                <span :class="styles['workflow-table__transitions-item']">
                   <WorkflowStepItem :step-data="stepNext(target)" />
                 </span>
                 <span
                   v-if="Number(i) < slotProps.data.nextSteps.length - 1"
-                  class="workflow-table__transitions-sep"
+                  :class="styles['workflow-table__transitions-sep']"
                 >, </span>
               </template>
             </div>
@@ -269,7 +270,9 @@ onUnmounted(() => {
 :deep(.workflow-table tbody > tr > td) {
   border-block-end-color: transparent !important;
 }
+</style>
 
+<style module lang="scss">
 .workflow-section-wrapper {
   height: 100%;
   width: 100%;

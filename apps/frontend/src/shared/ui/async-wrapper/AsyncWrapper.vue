@@ -2,7 +2,7 @@
 import type { AsyncWrapperEmits, AsyncWrapperProps, AsyncWrapperSlots } from './async-wrapper'
 import { whenever } from '@vueuse/core'
 import ProgressSpinner from 'primevue/progressspinner'
-import { computed, ref, toRefs, watch } from 'vue'
+import { computed, ref, toRefs, useCssModule, watch } from 'vue'
 
 const props = withDefaults(defineProps<AsyncWrapperProps>(), {
   disableUpdatingAnimation: false,
@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<AsyncWrapperProps>(), {
 })
 const emits = defineEmits<AsyncWrapperEmits>()
 defineSlots<AsyncWrapperSlots>()
+
+const styles = useCssModule()
 
 const {
   isLoading,
@@ -73,34 +75,30 @@ const errorShouldReveal = computed(() => {
 </script>
 
 <template>
-  <div
-    class="async-wrapper"
-  >
-    <div v-if="loadingStateShouldReveal" class="async-wrapper__loading" :class="[{ 'async-wrapper__loading--fixed': isLoadingFixed }]">
+  <div :class="styles['async-wrapper']">
+    <div v-if="loadingStateShouldReveal" :class="[styles['async-wrapper__loading'], { [styles['async-wrapper__loading--fixed']]: isLoadingFixed }]">
       <slot name="loading">
-        <div class="async-wrapper__loading-slug">
-          <ProgressSpinner class="async-wrapper__loading-indicator" />
-          <div v-if="loadingLabel" class="async-wrapper__loading-text">
+        <div :class="styles['async-wrapper__loading-slug']">
+          <ProgressSpinner :class="styles['async-wrapper__loading-indicator']" />
+          <div v-if="loadingLabel" :class="styles['async-wrapper__loading-text']">
             {{ loadingLabel }}
           </div>
         </div>
       </slot>
     </div>
 
-    <div v-else-if="noData" class="async-wrapper__no-data">
+    <div v-else-if="noData" :class="styles['async-wrapper__no-data']">
       <slot name="noData" />
     </div>
 
-    <div v-else class="async-wrapper__content">
-      <!-- Оверлей индикатора обновления -->
-      <!-- Оверлей и сам индикатор разделены для разных анимаций -->
+    <div v-else :class="styles['async-wrapper__content']">
       <Transition
         name="async-wrapper__cross-blur-transition"
         :css="!disableUpdatingAnimation"
       >
         <div
           v-show="updatingStateShouldReveal"
-          class="async-wrapper__overlay"
+          :class="styles['async-wrapper__overlay']"
         />
       </Transition>
       <Transition
@@ -109,24 +107,20 @@ const errorShouldReveal = computed(() => {
       >
         <div
           v-if="updatingStateShouldReveal"
-          class="async-wrapper__updating"
-          :class="[
-            { 'async-wrapper__updating--fixed': isUpdatingFixed },
-          ]"
+          :class="[styles['async-wrapper__updating'], { [styles['async-wrapper__updating--fixed']]: isUpdatingFixed }]"
         >
           <slot name="loading">
-            <div class="async-wrapper__loading-slug">
+            <div :class="styles['async-wrapper__loading-slug']">
               <ProgressSpinner
-                class="async-wrapper__loading-indicator"
+                :class="styles['async-wrapper__loading-indicator']"
               />
-              <div v-if="loadingLabel" class="async-wrapper__loading-text">
+              <div v-if="loadingLabel" :class="styles['async-wrapper__loading-text']">
                 {{ loadingLabel }}
               </div>
             </div>
           </slot>
         </div>
       </Transition>
-      <!-- END: Оверлей индикатора обновления -->
 
       <slot />
     </div>
@@ -137,26 +131,23 @@ const errorShouldReveal = computed(() => {
     >
       <div
         v-if="errorShouldReveal"
-        class="async-wrapper__error"
-        :class="[
-          { 'async-wrapper__error--fixed': isErrorFixed },
-        ]"
+        :class="[styles['async-wrapper__error'], { [styles['async-wrapper__error--fixed']]: isErrorFixed }]"
         @mouseover="unQueueHide"
         @mouseout="queueHide"
       >
-        <div class="async-wrapper__error-caption">
+        <div :class="styles['async-wrapper__error-caption']">
           это уведомление исчезнет через 5 секунд
           <a
-            class="async-wrapper__close-error"
+            :class="styles['async-wrapper__close-error']"
             role="button"
             @click="hideError"
           >
             закрыть сейчас
           </a>
         </div>
-        <div class="async-wrapper__error-description">
+        <div :class="styles['async-wrapper__error-description']">
           <slot name="error">
-            <div class="async-wrapper__text">
+            <div :class="styles['async-wrapper__text']">
               Ошибка: "{{ error }}"
             </div>
           </slot>
@@ -166,7 +157,7 @@ const errorShouldReveal = computed(() => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .async-wrapper {
   position: relative;
   width: 100%;
@@ -176,13 +167,6 @@ const errorShouldReveal = computed(() => {
 
   &--hidden-overflow {
     overflow: hidden;
-  }
-
-  &__cross-blur-transition {
-    @include crossBlurTransition();
-  }
-  &__cross-fade-transition {
-    @include crossFadeTransition(350ms);
   }
 
   &__content {
@@ -227,7 +211,7 @@ const errorShouldReveal = computed(() => {
     width: 70px;
     height: 70px;
 
-    :deep(circle) {
+    circle {
       stroke: v-bind(spinnerColor);
       stroke-width: 4px;
     }
@@ -308,5 +292,14 @@ const errorShouldReveal = computed(() => {
       transform: scale(0.95);
     }
   }
+}
+</style>
+
+<style lang="scss">
+.async-wrapper__cross-blur-transition {
+  @include crossBlurTransition();
+}
+.async-wrapper__cross-fade-transition {
+  @include crossFadeTransition(350ms);
 }
 </style>

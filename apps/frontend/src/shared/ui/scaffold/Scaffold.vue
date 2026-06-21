@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import type { ScaffoldSlots } from './scaffold'
+import { useCssModule } from 'vue'
 
 defineOptions({
   name: 'Scaffold',
 })
 defineSlots<ScaffoldSlots>()
+
+const styles = useCssModule()
 </script>
 
 <template>
   <div
-    class="scaffold w-full overflow-hidden"
-    :class="{
-      'scaffold--with-sidebar': $slots.side,
-    }"
+    class="w-full overflow-hidden" :class="[
+      styles.scaffold,
+      { [styles['scaffold--with-sidebar']]: $slots.side },
+    ]"
   >
-    <main class="scaffold__body-main flex-1 min-w-0 h-screen overflow-y-auto overflow-x-auto">
+    <main class="flex-1 min-w-0 h-screen overflow-y-auto overflow-x-auto" :class="[styles['scaffold__body-main']]">
       <slot />
     </main>
 
@@ -22,7 +25,7 @@ defineSlots<ScaffoldSlots>()
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .scaffold {
   position: relative;
   min-height: 100dvh;

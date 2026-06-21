@@ -126,7 +126,6 @@ async function sendForm() {
     v-model:visible="isVisible"
     modal
     header="Создание нового состояния"
-    content-class="add-step-modal"
     style="max-width: 480px; width: 100%"
     :draggable="false"
     @close="cancel"
@@ -134,7 +133,6 @@ async function sendForm() {
     <Form
       ref="addStepFormRef"
       v-slot="{ meta }"
-      class="add-step-modal__form"
       :validation-schema="validationSchema"
       @submit="sendForm"
     >
@@ -160,7 +158,7 @@ async function sendForm() {
         </Field>
       </div>
 
-      <div class="add-step-modal__box-fields flex flex-row items-start justify-between gap-2">
+      <div class="flex flex-row items-start justify-between gap-2">
         <div class="w-full">
           <Field
             v-slot="{ errors, field }"
@@ -188,7 +186,6 @@ async function sendForm() {
       </div>
 
       <Button
-        class="add-step-modal__send-button"
         type="submit"
         :loading="loadingCreateStep"
         aria-label="Подтвердить"
@@ -200,6 +197,6 @@ async function sendForm() {
   </Dialog>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 
 </style>

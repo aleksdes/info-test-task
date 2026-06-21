@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FieldMessageProps } from './field-message'
-import { computed, useAttrs } from 'vue'
+import { computed, useAttrs, useCssModule } from 'vue'
 
 const props = withDefaults(defineProps<FieldMessageProps>(), {
   mergedError: false,
@@ -10,6 +10,8 @@ const props = withDefaults(defineProps<FieldMessageProps>(), {
 const attrs: {
   [key: string]: unknown
 } = useAttrs()
+
+const styles = useCssModule()
 
 const getErrors = computed(() => {
   if (!props?.errors)
@@ -31,14 +33,14 @@ const getMessages = computed(() => {
 </script>
 
 <template>
-  <div class="field-messages" :class="{ 'field-messages--errors': getErrors }">
+  <div :class="[styles['field-messages'], { [styles['field-messages--errors']]: getErrors }]">
     <transition name="slide-fade">
       <small v-if="getErrors || getMessages" v-bind="attrs" class="">{{ getErrors || getMessages }}</small>
     </transition>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .field-messages {
   --field-messages__color: gray;
 
@@ -52,7 +54,9 @@ const getMessages = computed(() => {
     --field-messages__color: red;
   }
 }
+</style>
 
+<style lang="scss">
 .slide-fade-enter-active {
   @include acceleratedTransition(all);
 }

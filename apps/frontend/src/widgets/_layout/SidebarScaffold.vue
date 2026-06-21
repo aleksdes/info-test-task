@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import Button from 'primevue/button'
-import { onMounted, ref } from 'vue'
+import { ref, useCssModule } from 'vue'
 import { UserMenuSettings } from '@/features/user-menu-settings'
 import { Scaffold } from '@/shared/ui'
 
@@ -15,6 +15,8 @@ import {
 
 const railSidebar = ref(false)
 const { width } = useWindowSize()
+const styles = useCssModule()
+
 // Функции управления меню
 function toggleMenu() {
   railSidebar.value = !railSidebar.value
@@ -38,7 +40,7 @@ function toggleMenu() {
         <template #bottom>
           <Button
             :icon="`pi pi-angle-double-${railSidebar ? 'left' : 'right'}`"
-            class="button-rail" :class="[{ 'button-rail--mini': !railSidebar }]"
+            :class="[styles['button-rail'], { [styles['button-rail--mini']]: !railSidebar }]"
             severity="contrast"
             variant="text"
             rounded
@@ -69,7 +71,7 @@ function toggleMenu() {
   </Scaffold>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .logotype {
   height: pxToRem(40px);
   width: auto;

@@ -1,28 +1,17 @@
 <script setup lang="ts">
-import type { SlotsType } from 'vue'
-import type { WorkflowStep } from '@/shared/generated/api'
+import type {
+  IWorkflowRemoveStepFeatureEmits,
+  IWorkflowRemoveStepFeatureProps,
+  IWorkflowRemoveStepFeatureSlots,
+} from './workflow-remove-step-feature'
 import Button from 'primevue/button'
 import { toRefs } from 'vue'
 import { useConfirmRemove } from '@/shared/ui'
 import { useWorkflowRemoveStep } from '../model'
 
-interface IProps {
-  workflowName: string
-  stepIndex: number | null
-}
-
-interface IEmits {
-  (e: 'refreshWorkflow'): void
-}
-
-interface ISlots extends SlotsType {
-  default: (args: {
-    removeStep: () => void
-  }) => any
-}
-const props = withDefaults(defineProps<IProps>(), {})
-const emits = defineEmits<IEmits>()
-defineSlots<ISlots>()
+const props = withDefaults(defineProps<IWorkflowRemoveStepFeatureProps>(), {})
+const emits = defineEmits<IWorkflowRemoveStepFeatureEmits>()
+defineSlots<IWorkflowRemoveStepFeatureSlots>()
 
 const { workflowName, stepIndex } = toRefs(props)
 const { deleteStep, deleteStepError } = useWorkflowRemoveStep()
@@ -46,7 +35,6 @@ async function onRemoveStep() {
   <slot v-bind="{ removeStep: onRemoveStep }">
     <Button
       size="small"
-      class="delete-step"
       severity="secondary"
       aria-label="Удалить состояние"
       title="Удалить состояние"

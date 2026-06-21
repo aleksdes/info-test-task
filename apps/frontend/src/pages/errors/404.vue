@@ -20,5 +20,5 @@ import { HomeRoute } from '@/app/router-setup/routes/user-scope-routes'
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 </style>
