@@ -1,0 +1,6 @@
+export { default as ConfirmationIcon } from './Confirmation.svg?use'
+export { default as ErrorOutlineIcon } from './ErrorOutlineIcon.svg?use'
+export { default as Logo } from './Logo.svg?use'
+export { default as LogotypeGray } from './LogotypeGray.svg?view'
+export { default as LogotypeWhite } from './LogotypeWhite.svg?view'
+export { default as LogoutOutlineIcon } from './LogoutOutline.svg?use'
