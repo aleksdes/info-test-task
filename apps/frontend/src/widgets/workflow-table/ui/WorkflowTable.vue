@@ -78,7 +78,7 @@ const wrapperRef = ref<HTMLElement | null>(null)
 function measureTransitions() {
   if (!wrapperRef.value)
     return
-  for (const container of wrapperRef.value.querySelectorAll<HTMLElement>('.transitions')) {
+  for (const container of wrapperRef.value.querySelectorAll<HTMLElement>('[data-transitions]')) {
     const children = Array.from(container.children) as HTMLElement[]
 
     for (const child of children) {
@@ -114,11 +114,11 @@ function measureTransitions() {
 }
 
 watch(sortedSteps, () => {
-  nextTick(() => {
+  setTimeout(() => {
     measureTransitions()
     setupObserver()
-  })
-}, { deep: true })
+  }, 100)
+}, { deep: true, immediate: true })
 
 let observer: ResizeObserver | null = null
 
@@ -128,20 +128,14 @@ function setupObserver() {
   if (!wrapperRef.value)
     return
   observer.observe(wrapperRef.value)
-  const dtWrapper = wrapperRef.value.querySelector<HTMLElement>('.p-datatable-wrapper')
+  const dtWrapper = wrapperRef.value.querySelector<HTMLElement>('.p-datatable')
+
   if (dtWrapper)
     observer.observe(dtWrapper)
-  for (const el of wrapperRef.value.querySelectorAll<HTMLElement>('.transitions')) {
+  for (const el of wrapperRef.value.querySelectorAll<HTMLElement>('[data-transitions]')) {
     observer.observe(el)
   }
 }
-
-onMounted(() => {
-  nextTick(() => {
-    measureTransitions()
-    setupObserver()
-  })
-})
 
 onUnmounted(() => {
   observer?.disconnect()
@@ -203,7 +197,10 @@ onUnmounted(() => {
           header="Переходы"
         >
           <template #body="slotProps">
-            <div :class="styles['workflow-table__transitions']">
+            <div
+              :class="styles['workflow-table__transitions']"
+              data-transitions
+            >
               <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
                 <span :class="styles['workflow-table__transitions-item']">
                   <WorkflowStepItem :step-data="stepNext(target)" />
