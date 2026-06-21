@@ -90,9 +90,9 @@ const {
 .content-container {
   display: grid;
   grid-template-columns: 49% 49%;
-  gap: pxToRem(15px);
   align-self: center;
-  height: calc(100dvh - 48px);
-  overflow: hidden;
+  justify-content: space-between;
+  height: calc(100dvh - 40px);
+  // overflow: hidden;
 }
 </style>

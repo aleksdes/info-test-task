@@ -78,7 +78,7 @@ const defaultViewport = { x: 0, y: 0, zoom: 1 }
   height: 100%;
   width: 100%;
   background-color: #f9f9f9;
-  border-radius: pxToRem(16px);
+  border-radius: pxToRem(8px);
   border: 1px solid #eaeaea;
   overflow: hidden;
 }

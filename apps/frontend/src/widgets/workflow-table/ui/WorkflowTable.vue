@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { WorkflowStep } from '@/shared/generated/api'
+import Button from 'primevue/button'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
@@ -98,53 +99,74 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="wrapperRef" class="workflow-table-wrapper">
-    <DataTable
-      ref="wrapperRef"
-      :value="sortedSteps"
-      scrollable
-      scroll-height="flex"
-      table-class="workflow-table"
-    >
-      <Column header="Состояние" style="max-width: 250px">
-        <template #body="slotProps">
-          <WorkflowStepItem
-            :step-data="slotProps.data"
+  <div class="workflow-section-wrapper">
+    <div class="workflow-section-wrapper__header">
+      <p>Структура рабочего процесса</p>
+
+      <Button
+        size="small"
+        class="create-step"
+        severity="secondary"
+        aria-label="Создать состояние"
+        title="Создать состояние"
+        label="Создать состояние"
+      >
+        <template #icon>
+          <FontAwesomeIcon
+            :icon="['fas', 'plus']"
           />
         </template>
-      </Column>
+      </Button>
+    </div>
 
-      <Column
-        field="x"
-        header="x"
-        header-class="workflow-table__col-coord-header"
-        body-class="workflow-table__col-coord-body"
-      />
-      <Column
-        field="y"
-        header="y"
-        header-class="workflow-table__col-coord-header"
-        body-class="workflow-table__col-coord-body"
-      />
-
-      <Column
-        header="Переходы"
+    <div ref="wrapperRef" class="workflow-table-wrapper">
+      <DataTable
+        ref="wrapperRef"
+        :value="sortedSteps"
+        scrollable
+        scroll-height="flex"
+        table-class="workflow-table"
       >
-        <template #body="slotProps">
-          <div class="transitions">
-            <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
-              <span class="transitions-item">
-                <WorkflowStepItem :step-data="stepNext(target)" />
-              </span>
-              <span
-                v-if="Number(i) < slotProps.data.nextSteps.length - 1"
-                class="transitions-sep"
-              >, </span>
-            </template>
-          </div>
-        </template>
-      </Column>
-    </DataTable>
+        <Column header="Состояние" style="max-width: 250px">
+          <template #body="slotProps">
+            <WorkflowStepItem
+              :step-data="slotProps.data"
+            />
+          </template>
+        </Column>
+
+        <Column
+          field="x"
+          header="x"
+          header-class="workflow-table__col-coord-header"
+          body-class="workflow-table__col-coord-body"
+        />
+        <Column
+          field="y"
+          header="y"
+          header-class="workflow-table__col-coord-header"
+          body-class="workflow-table__col-coord-body"
+        />
+
+        <Column
+          header="Переходы"
+        >
+          <template #body="slotProps">
+            <div class="workflow-table__transitions">
+              <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
+                <span class="workflow-table__transitions-item">
+                  <WorkflowStepItem :step-data="stepNext(target)" />
+                </span>
+                <span
+                  v-if="Number(i) < slotProps.data.nextSteps.length - 1"
+                  class="workflow-table__transitions-sep"
+                >, </span>
+              </template>
+            </div>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
   </div>
 </template>
 
@@ -155,30 +177,48 @@ onUnmounted(() => {
 :deep(.workflow-table__col-coord-body) {
   text-align: right;
 }
+:deep(.workflow-table thead th) {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-500);
+}
 
-.workflow-table-wrapper {
+.workflow-section-wrapper {
   height: 100%;
   width: 100%;
   overflow: auto;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: pxToRem(16px);
+    font-size: pxToRem(16px);
+  }
 }
 
-.transitions {
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: pxToRem(250px);
+.workflow-table-wrapper {
+  height: calc(100% - 80px);
 }
 
-.transitions-item {
-  display: inline-block;
-  white-space: nowrap;
-  vertical-align: middle;
-  max-width: 100%;
-  overflow: hidden;
-}
+.workflow-table {
+  &__transitions {
+    overflow: hidden;
+    white-space: nowrap;
+    // max-width: pxToRem(250px);
+  }
 
-.transitions-sep {
-  display: inline;
-  white-space: nowrap;
-  vertical-align: middle;
+  &__transitions-item {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  &__transitions-sep {
+    display: inline;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
 }
 </style>
