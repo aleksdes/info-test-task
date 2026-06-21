@@ -22,7 +22,7 @@ defineProps<{
   </div>
 </template>
 
-<style scoped>
+<style scoped lang='scss'>
 .schema-node {
   display: flex;
   align-items: center;
