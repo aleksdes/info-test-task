@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { NodeDragEvent, NodeMouseEvent } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { VueFlow } from '@vue-flow/core'
 import { storeToRefs } from 'pinia'
 import { computed, markRaw } from 'vue'
 import { useWorkflow } from '@/entities/workflow'
+import { useWorkflowStepCoord } from '@/features/workflow/workflow-step-coord/index.ts'
 import WorkflowEdge from './WorkflowEdge.vue'
 import WorkflowSchemaNode from './WorkflowSchemaNode.vue'
 import '@vue-flow/core/dist/style.css'
@@ -12,6 +14,7 @@ import '@vue-flow/core/dist/theme-default.css'
 
 const workflowStore = useWorkflow()
 const { workflowData, selectedStep } = storeToRefs(workflowStore)
+const { updateCoordStepCall } = useWorkflowStepCoord()
 
 const sortedSteps = computed(() => {
   if (!workflowData?.value?.steps)
@@ -60,6 +63,29 @@ const edges = computed(() => {
 })
 
 const defaultViewport = { x: 0, y: 0, zoom: 1 }
+
+function onNodeClick(data: NodeMouseEvent) {
+  if (data.node.id !== null && data.node.id !== undefined) {
+    const step = workflowData.value?.steps.find(s => s.initialIndex === Number(data.node.id))
+    if (step)
+      selectedStep.value = step
+  }
+}
+
+function onNodeDragStop(data: NodeDragEvent) {
+  const { node } = data
+  if (!workflowData.value)
+    return
+
+  const dataFromSave = {
+    stepInitialIndex: Number(node.id),
+    wfName: workflowData.value?.name,
+    x: Math.round(node.computedPosition.x),
+    y: Math.round(node.computedPosition.y),
+  }
+
+  updateCoordStepCall(dataFromSave)
+}
 </script>
 
 <template>
@@ -73,6 +99,8 @@ const defaultViewport = { x: 0, y: 0, zoom: 1 }
       fit-view-on-init
       :min-zoom="0.1"
       :max-zoom="2"
+      @node-click="onNodeClick"
+      @node-drag-stop="onNodeDragStop"
     >
       <Background :gap="20" />
       <Controls />

@@ -6,11 +6,14 @@ import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useWorkflow, WorkflowStep as WorkflowStepItem } from '@/entities/workflow'
-import { WorkflowRemoveStepFeature } from '@/features/workflow-remove-step'
+import { WorkflowCreateStepFeature } from '@/features/workflow/workflow-crete-step'
+import { WorkflowRemoveStepFeature } from '@/features/workflow/workflow-remove-step'
+import { WorkflowUpdateNameStepFeature } from '@/features/workflow/workflow-update-name-step'
 
 const workflowStore = useWorkflow()
 const { workflowData, selectedStep } = storeToRefs(workflowStore)
 const onRefetchWorkflow = inject<() => void>('refetchWorkflow')
+const editedStep = ref<number | null>()
 
 function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
   const nodeMap = new Map(steps.map(node => [node.initialIndex, node]))
@@ -149,20 +152,10 @@ onUnmounted(() => {
     <div class="workflow-section-wrapper__header">
       <p>Структура рабочего процесса</p>
 
-      <Button
-        size="small"
-        class="create-step"
-        severity="secondary"
-        aria-label="Создать состояние"
-        title="Создать состояние"
-        label="Создать состояние"
-      >
-        <template #icon>
-          <FontAwesomeIcon
-            :icon="['fas', 'plus']"
-          />
-        </template>
-      </Button>
+      <WorkflowCreateStepFeature
+        :workflow="workflowData || ''"
+        @refresh-workflow="onRefetchWorkflow"
+      />
     </div>
 
     <div ref="wrapperRef" class="workflow-table-wrapper">
@@ -179,7 +172,15 @@ onUnmounted(() => {
         <Column header="Состояние" style="max-width: 250px">
           <template #body="slotProps">
             <WorkflowStepItem
+              v-if="editedStep !== slotProps.data.initialIndex"
               :step-data="slotProps.data"
+            />
+
+            <WorkflowUpdateNameStepFeature
+              v-else
+              :step="slotProps.data"
+              :workflow-name="workflowData?.name || ''"
+              @reset-update="editedStep = null"
             />
           </template>
         </Column>
@@ -201,18 +202,40 @@ onUnmounted(() => {
           header="Переходы"
         >
           <template #body="slotProps">
-            <div class="flex flex-row items-center justify-between gap-2">
-              <div class="workflow-table__transitions">
-                <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
-                  <span class="workflow-table__transitions-item">
-                    <WorkflowStepItem :step-data="stepNext(target)" />
-                  </span>
-                  <span
-                    v-if="Number(i) < slotProps.data.nextSteps.length - 1"
-                    class="workflow-table__transitions-sep"
-                  >, </span>
+            <div class="workflow-table__transitions">
+              <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
+                <span class="workflow-table__transitions-item">
+                  <WorkflowStepItem :step-data="stepNext(target)" />
+                </span>
+                <span
+                  v-if="Number(i) < slotProps.data.nextSteps.length - 1"
+                  class="workflow-table__transitions-sep"
+                >, </span>
+              </template>
+            </div>
+          </template>
+        </Column>
+
+        <Column
+          header=""
+        >
+          <template #body="slotProps">
+            <div class="flex flex-row items-center justify-end gap-2">
+              <Button
+                size="small"
+                class="delete-step"
+                severity="secondary"
+                aria-label="Редактировать состояние"
+                title="Редактировать состояние"
+                label=""
+                @click="editedStep = slotProps.data.initialIndex"
+              >
+                <template #icon>
+                  <FontAwesomeIcon
+                    :icon="['far', 'pen-to-square']"
+                  />
                 </template>
-              </div>
+              </Button>
 
               <WorkflowRemoveStepFeature
                 :step-index="slotProps.data.initialIndex"

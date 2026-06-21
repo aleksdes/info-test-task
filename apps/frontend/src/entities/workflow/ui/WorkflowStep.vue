@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { WorkflowStep } from '@/shared/generated/api'
-import { toRefs } from 'vue'
+import { toRefs, useCssModule } from 'vue'
 
 const props = withDefaults(defineProps<{
   stepData?: WorkflowStep | null
@@ -9,20 +9,21 @@ const props = withDefaults(defineProps<{
 })
 
 const { stepData } = toRefs(props)
+const styles = useCssModule()
 </script>
 
 <template>
-  <div class="step">
+  <div :class="styles.step">
     <FontAwesomeIcon
       :icon="['far', 'file']"
-      class="step-icon"
+      :class="styles['step-icon']"
       :style="{ color: stepData?.color || '#6b7280' }"
     />
-    <span class="step-name">{{ stepData?.name }}</span>
+    <span :class="styles['step-name']">{{ stepData?.name }}</span>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .step {
   display: flex;
   align-items: center;

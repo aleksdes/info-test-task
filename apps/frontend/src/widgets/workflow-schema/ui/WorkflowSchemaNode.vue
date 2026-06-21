@@ -40,7 +40,7 @@ defineProps<{
   justify-content: center;
   min-width: 120px;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: 2px solid;
   font-size: 13px;
   font-weight: 600;

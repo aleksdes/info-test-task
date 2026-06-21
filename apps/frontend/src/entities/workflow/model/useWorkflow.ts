@@ -45,6 +45,7 @@ export const useWorkflow: () => IWorkflowStore = defineStore('workflow', () => {
 
   function $reset() {
     workflowData.value = null
+    selectedStep.value = null
   }
 
   return {

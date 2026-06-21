@@ -57,7 +57,7 @@ const userDesc = computed(() => currentUser.value?.fullName || currentUser.value
           <Button
             label="Выйти"
             icon="pi pi-sign-out"
-            class="w-100"
+            class="w-full"
             rounded
           />
         </div>
@@ -87,7 +87,7 @@ const userDesc = computed(() => currentUser.value?.fullName || currentUser.value
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .user-menu-trigger {
   --user-avatar__color: white;
 }
