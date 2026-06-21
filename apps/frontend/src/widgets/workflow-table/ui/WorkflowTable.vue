@@ -1,18 +1,70 @@
 <script setup lang="ts">
 import type { WorkflowStep } from '@/shared/generated/api'
+import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useWorkflow, WorkflowStep as WorkflowStepItem } from '@/entities/workflow'
+import { WorkflowRemoveStepFeature } from '@/features/workflow-remove-step'
 
 const workflowStore = useWorkflow()
-const { workflowData } = workflowStore
+const { workflowData } = storeToRefs(workflowStore)
+const onRefetchWorkflow = inject<() => void>('refetchWorkflow')
+
+function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
+  const nodeMap = new Map(steps.map(node => [node.initialIndex, node]))
+
+  const hasIncoming = new Set<number>()
+
+  steps.forEach((node) => {
+    node.nextSteps.forEach((next) => {
+      hasIncoming.add(next)
+    })
+  })
+
+  const rootNode = steps.find(node => !hasIncoming.has(node.initialIndex))
+
+  if (!rootNode) {
+    console.warn('Корневой узел не найден')
+    return []
+  }
+
+  const visited = new Set<number>()
+  const result: WorkflowStep[] = []
+
+  function dfs(nodeIndex: number) {
+    if (visited.has(nodeIndex))
+      return
+
+    const node = nodeMap.get(nodeIndex)
+    if (!node)
+      return
+
+    const stepsReverse = [...node.nextSteps].reverse()
+
+    for (const nextIndex of stepsReverse) {
+      dfs(nextIndex)
+    }
+
+    if (!visited.has(nodeIndex)) {
+      visited.add(nodeIndex)
+      result.unshift(node)
+    }
+  }
+
+  dfs(rootNode.initialIndex)
+
+  return result
+}
 
 const sortedSteps = computed(() => {
-  if (!workflowData?.steps)
+  if (!workflowData?.value?.steps)
     return []
-  return [...workflowData.steps].sort((a, b) => a.initialIndex - b.initialIndex)
+
+  console.log('sortedSteps', workflowData?.value)
+
+  return buildStepsTable(workflowData.value.steps)
 })
 
 function stepNext(index: number): WorkflowStep | null {
@@ -152,16 +204,24 @@ onUnmounted(() => {
           header="Переходы"
         >
           <template #body="slotProps">
-            <div class="workflow-table__transitions">
-              <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
-                <span class="workflow-table__transitions-item">
-                  <WorkflowStepItem :step-data="stepNext(target)" />
-                </span>
-                <span
-                  v-if="Number(i) < slotProps.data.nextSteps.length - 1"
-                  class="workflow-table__transitions-sep"
-                >, </span>
-              </template>
+            <div class="flex flex-row items-center justify-between gap-2">
+              <div class="workflow-table__transitions">
+                <template v-for="(target, i) in slotProps.data.nextSteps" :key="target">
+                  <span class="workflow-table__transitions-item">
+                    <WorkflowStepItem :step-data="stepNext(target)" />
+                  </span>
+                  <span
+                    v-if="Number(i) < slotProps.data.nextSteps.length - 1"
+                    class="workflow-table__transitions-sep"
+                  >, </span>
+                </template>
+              </div>
+
+              <WorkflowRemoveStepFeature
+                :step-index="slotProps.data.initialIndex"
+                :workflow-name="workflowData?.name || ''"
+                @refresh-workflow="onRefetchWorkflow"
+              />
             </div>
           </template>
         </Column>
@@ -204,7 +264,7 @@ onUnmounted(() => {
   &__transitions {
     overflow: hidden;
     white-space: nowrap;
-    // max-width: pxToRem(250px);
+    max-width: pxToRem(250px);
   }
 
   &__transitions-item {

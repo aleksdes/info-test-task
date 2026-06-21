@@ -1,9 +1,7 @@
 import type { Store } from 'pinia'
 import type { GetWorkflowParams, Workflow } from '@/shared/generated/api'
 import { defineStore } from 'pinia'
-
 import { ref } from 'vue'
-
 import { useApiClient } from '@/shared/lib/api-client'
 
 export interface IWorkflowState {

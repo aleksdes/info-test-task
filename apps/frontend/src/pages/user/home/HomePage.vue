@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useCssModule } from 'vue'
+import { provide, useCssModule } from 'vue'
 import { useWorkflow } from '@/entities/workflow'
 import { useAsyncOperation } from '@/shared/lib/async-operation'
 import { AsyncWrapper } from '@/shared/ui/async-wrapper'
@@ -26,6 +26,8 @@ const {
 } = useAsyncOperation(getWorkflow, {
   immediateCall: true,
 })
+
+provide('refetchWorkflow', refetchWorkflow)
 </script>
 
 <template>
@@ -93,6 +95,5 @@ const {
   align-self: center;
   justify-content: space-between;
   height: calc(100dvh - 40px);
-  // overflow: hidden;
 }
 </style>

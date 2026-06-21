@@ -28,7 +28,7 @@ defineProps<{
   align-items: center;
   justify-content: center;
   min-width: 120px;
-  max-width: 200px;
+  // max-width: 200px;
   padding: 10px 20px;
   border-radius: 8px;
   border: 2px solid;
@@ -45,8 +45,8 @@ defineProps<{
 }
 
 .schema-node-label {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
   white-space: nowrap;
 }
 </style>
