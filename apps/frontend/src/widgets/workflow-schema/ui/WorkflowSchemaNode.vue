@@ -2,7 +2,7 @@
 import { Handle } from '@vue-flow/core'
 
 defineProps<{
-  data: { label: string; color?: string }
+  data: { label: string, color?: string }
 }>()
 </script>
 
@@ -37,7 +37,7 @@ defineProps<{
   text-align: center;
   cursor: pointer;
   transition: box-shadow 0.15s;
-  background: transparent;
+  background-color: #f9f9f9;
 }
 
 .schema-node:hover {
