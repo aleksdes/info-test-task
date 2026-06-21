@@ -9,7 +9,7 @@ import { useWorkflow, WorkflowStep as WorkflowStepItem } from '@/entities/workfl
 import { WorkflowRemoveStepFeature } from '@/features/workflow-remove-step'
 
 const workflowStore = useWorkflow()
-const { workflowData } = storeToRefs(workflowStore)
+const { workflowData, selectedStep } = storeToRefs(workflowStore)
 const onRefetchWorkflow = inject<() => void>('refetchWorkflow')
 
 function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
@@ -61,9 +61,6 @@ function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
 const sortedSteps = computed(() => {
   if (!workflowData?.value?.steps)
     return []
-
-  console.log('sortedSteps', workflowData?.value)
-
   return buildStepsTable(workflowData.value.steps)
 })
 
@@ -80,7 +77,6 @@ function measureTransitions() {
   for (const container of wrapperRef.value.querySelectorAll<HTMLElement>('.transitions')) {
     const children = Array.from(container.children) as HTMLElement[]
 
-    // reset
     for (const child of children) {
       child.style.removeProperty('display')
       child.style.removeProperty('max-width')
@@ -101,12 +97,10 @@ function measureTransitions() {
     if (overflowIdx === -1)
       continue
 
-    // hide items strictly after overflowIdx
     for (let i = overflowIdx + 1; i < children.length; i++) {
       children[i].style.display = 'none'
     }
 
-    // constrain boundary item to remaining space so ellipsis triggers
     accWidth = 0
     for (let i = 0; i < overflowIdx; i++) {
       accWidth += children[i].offsetWidth
@@ -174,7 +168,10 @@ onUnmounted(() => {
     <div ref="wrapperRef" class="workflow-table-wrapper">
       <DataTable
         ref="wrapperRef"
+        v-model:selection="selectedStep"
         :value="sortedSteps"
+        selection-mode="single"
+        data-key="initialIndex"
         scrollable
         scroll-height="flex"
         table-class="workflow-table"
@@ -240,6 +237,14 @@ onUnmounted(() => {
 :deep(.workflow-table thead th) {
   background-color: var(--color-gray-100);
   color: var(--color-gray-500);
+}
+:deep(.workflow-table tbody > tr.p-datatable-row-selected) {
+  background: var(--color-gray-100);
+  color: currentColor;
+  border: none;
+}
+:deep(.workflow-table tbody > tr > td) {
+  border-block-end-color: transparent !important;
 }
 
 .workflow-section-wrapper {

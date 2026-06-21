@@ -1,11 +1,12 @@
 import type { Store } from 'pinia'
-import type { GetWorkflowParams, Workflow } from '@/shared/generated/api'
+import type { GetWorkflowParams, Workflow, WorkflowStep } from '@/shared/generated/api'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useApiClient } from '@/shared/lib/api-client'
 
 export interface IWorkflowState {
   workflowData: Workflow | null
+  selectedStep: WorkflowStep | null
 }
 
 export interface IWorkflowGetters {
@@ -24,6 +25,7 @@ export const useWorkflow: () => IWorkflowStore = defineStore('workflow', () => {
   const apiClient = useApiClient()
 
   const workflowData = ref<Workflow | null>(null)
+  const selectedStep = ref<WorkflowStep | null>(null)
 
   function patch(data: Workflow | null) {
     workflowData.value = data
@@ -47,6 +49,7 @@ export const useWorkflow: () => IWorkflowStore = defineStore('workflow', () => {
 
   return {
     workflowData,
+    selectedStep,
     fetchWorkflows,
     patch,
     $reset,
