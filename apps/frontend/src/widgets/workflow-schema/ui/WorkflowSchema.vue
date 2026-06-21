@@ -2,6 +2,7 @@
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { VueFlow } from '@vue-flow/core'
+import { storeToRefs } from 'pinia'
 import { computed, markRaw } from 'vue'
 import { useWorkflow } from '@/entities/workflow'
 import WorkflowEdge from './WorkflowEdge.vue'
@@ -10,13 +11,15 @@ import '@vue-flow/core/dist/style.css'
 import '@vue-flow/core/dist/theme-default.css'
 
 const workflowStore = useWorkflow()
-const { workflowData } = workflowStore
+const { workflowData, selectedStep } = storeToRefs(workflowStore)
 
 const sortedSteps = computed(() => {
-  if (!workflowData?.steps)
+  if (!workflowData?.value?.steps)
     return []
-  return [...workflowData.steps].sort((a, b) => a.initialIndex - b.initialIndex)
+  return [...workflowData.value.steps].sort((a, b) => a.initialIndex - b.initialIndex)
 })
+
+const selectedIndex = computed(() => selectedStep?.value?.initialIndex ?? null)
 
 const nodeTypes = {
   workflow: markRaw(WorkflowSchemaNode),
@@ -31,7 +34,11 @@ const nodes = computed(() =>
     id: String(step.initialIndex),
     type: 'workflow',
     position: { x: step.x, y: step.y },
-    data: { label: step.name, color: step.color },
+    data: {
+      label: step.name,
+      color: selectedIndex.value === step.initialIndex ? '' : step.color,
+      selected: selectedIndex.value === step.initialIndex,
+    },
   })),
 )
 
