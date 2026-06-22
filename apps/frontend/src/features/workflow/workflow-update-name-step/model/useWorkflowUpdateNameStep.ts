@@ -1,4 +1,4 @@
-import type { ChangeStepNameCreatePayload, DeleteStepCreatePayload, WorkflowStep } from '@/shared/generated/api'
+import type { ChangeStepNameCreatePayload } from '@/shared/generated/api'
 import { useWorkflow } from '@/entities/workflow'
 import { useApiClient } from '@/shared/lib/api-client'
 import { useAsyncOperation } from '@/shared/lib/async-operation'

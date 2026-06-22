@@ -1,5 +1,5 @@
 import type { WorkflowStep } from '@/shared/generated/api'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { buildStepsTable } from '../helpers'
 
 beforeAll(() => {

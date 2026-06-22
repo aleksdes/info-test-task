@@ -23,7 +23,6 @@ const emits = defineEmits<WorkflowCreateStepFeatureEmits>()
 
 defineSlots<WorkflowCreateStepFeatureSlots>()
 
-const addStepFormRef = ref()
 const { workflow } = toRefs(props)
 const state = reactive({
   name: '',
@@ -131,7 +130,6 @@ async function sendForm() {
     @close="cancel"
   >
     <Form
-      ref="addStepFormRef"
       v-slot="{ meta }"
       :validation-schema="validationSchema"
       @submit="sendForm"

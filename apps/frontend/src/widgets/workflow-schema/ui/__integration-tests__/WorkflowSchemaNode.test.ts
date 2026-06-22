@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/vue'
 import { describe, expect, it } from 'vitest'
 import WorkflowSchemaNode from '../WorkflowSchemaNode.vue'
 
-function renderNode(data: Record<string, unknown>) {
+function renderNode(data: { label: string, color?: string, selected?: boolean }) {
   return render(WorkflowSchemaNode, {
     props: { data },
     global: {
