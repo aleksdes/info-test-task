@@ -1,0 +1,8 @@
+{
+  "name": "wf1",
+  "steps": [
+    { "initialIndex": 0, "name": "Закупка", "color": "#5C6BC0", "x": 174, "y": 101, "nextSteps": [1] },
+    { "initialIndex": 1, "name": "Сборка", "color": "#26A69A", "x": 424, "y": 149, "nextSteps": [2] },
+    { "initialIndex": 2, "name": "Упаковка", "color": "#FF7043", "x": 700, "y": 88, "nextSteps": [] }
+  ]
+}
