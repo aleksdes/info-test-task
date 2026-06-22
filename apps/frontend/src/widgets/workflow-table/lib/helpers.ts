@@ -13,6 +13,7 @@ export function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
   })
 
   const rootNode = steps.find(node => !hasIncoming.has(node.initialIndex))
+  const nodesWithoutConnections = steps.filter(node => !hasIncoming.has(node.initialIndex) && !node.nextSteps.length)
 
   if (!rootNode) {
     console.warn('Корневой узел не найден')
@@ -44,7 +45,7 @@ export function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
 
   dfs(rootNode.initialIndex)
 
-  return result
+  return [...result, ...nodesWithoutConnections]
 }
 
 export function useMeasureTransitions() {

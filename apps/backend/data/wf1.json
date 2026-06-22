@@ -161,17 +161,17 @@
 	},
 	{
 		"initialIndex": 16,
-		"name": "Шаг16",
-		"x": 169,
-		"y": 406,
+		"name": "Шаг16dczs",
+		"x": 349,
+		"y": 525,
 		"nextSteps": [],
 		"color": "#15d943"
 	},
 	{
 		"initialIndex": 17,
 		"name": "Шаг17",
-		"x": 352,
-		"y": 281,
+		"x": 214,
+		"y": 409,
 		"nextSteps": [],
 		"color": "#3c13c2"
 	}
