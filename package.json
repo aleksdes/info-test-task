@@ -2,6 +2,7 @@
   "name": "info_test_task",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.10.0",
   "scripts": {
     "dev": "concurrently -n backend,frontend -c blue,green \"env-cmd -f .env pnpm run --filter @info_test_task/backend dev\" \"env-cmd -f .env pnpm run --filter @info_test_task/frontend dev\"",
     "build": "env-cmd -f .env pnpm -r build",
