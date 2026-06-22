@@ -184,8 +184,14 @@ watch(sortedSteps, () => {
   color: currentColor;
   border: none;
 }
-:deep(.workflow-table tbody > tr > td) {
+:deep(.workflow-table tbody > tr.p-datatable-row-selected > td) {
   border-block-end-color: transparent !important;
+}
+:deep(.workflow-table tbody > tr:has(+ .p-datatable-row-selected) > td) {
+  border-block-end-color: transparent !important;
+}
+:deep(.workflow-table tbody > tr > td) {
+  padding: pxToRem(8px) pxToRem(16px);
 }
 </style>
 
