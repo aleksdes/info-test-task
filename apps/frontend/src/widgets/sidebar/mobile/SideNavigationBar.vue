@@ -94,7 +94,7 @@ watch(route, () => {
 <style module lang="scss">
 .side-navigation-bar {
   --side-navigation-bar__height: 80px;
-  --side-navigation-bar__bg-color: var(--color-white);
+  --side-navigation-bar__bg-color: var(--p-e);
   --side-navigation-bar__padding: 8px 12px;
   --side-navigation-bar__border: 16px 16px 0 0;
 

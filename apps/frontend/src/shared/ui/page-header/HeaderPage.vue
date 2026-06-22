@@ -62,8 +62,8 @@ const styles = useCssModule()
     height: 24px;
     background: linear-gradient(
       to bottom,
-      oklch(from var(--color-zinc-100) l c h / 1),
-      oklch(from var(--color-zinc-100) l c h / 0.6)
+      oklch(from var(--p-zinc-100) l c h / 1),
+      oklch(from var(--p-zinc-100) l c h / 0.6)
     );
     z-index: -1;
     pointer-events: none;

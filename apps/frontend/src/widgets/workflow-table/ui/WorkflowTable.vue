@@ -136,7 +136,7 @@ watch(sortedSteps, () => {
             <div class="flex flex-row items-center justify-end gap-2">
               <Button
                 size="small"
-                class="delete-step"
+                class="min-w-[32px] w-[32px] h-[32px] p-0"
                 severity="secondary"
                 aria-label="Редактировать состояние"
                 title="Редактировать состояние"
@@ -176,11 +176,11 @@ watch(sortedSteps, () => {
   text-align: right;
 }
 :deep(.workflow-table thead th) {
-  background-color: var(--color-gray-100);
-  color: var(--color-gray-500);
+  background-color: var(--p-surface-100);
+  color: var(--p-gray-500);
 }
 :deep(.workflow-table tbody > tr.p-datatable-row-selected) {
-  background: var(--color-gray-100);
+  background: var(--p-gray-100);
   color: currentColor;
   border: none;
 }
@@ -191,6 +191,9 @@ watch(sortedSteps, () => {
   border-block-end-color: transparent !important;
 }
 :deep(.workflow-table tbody > tr > td) {
+  padding: pxToRem(8px) pxToRem(16px);
+}
+:deep(.workflow-table thead th) {
   padding: pxToRem(8px) pxToRem(16px);
 }
 </style>
@@ -206,7 +209,7 @@ watch(sortedSteps, () => {
     flex-direction: row;
     justify-content: space-between;
     padding: pxToRem(16px);
-    font-size: pxToRem(16px);
+    font-size: pxToRem(18px);
   }
 }
 

@@ -86,8 +86,8 @@ const sharedState: SideNavigationBarItemState = {
 .side-navigation-bar-item {
   --icon-size: 18px;
   --side-navigation-bar-item__bg-color: transparent;
-  --side-navigation-bar-item__bg-active-color: var(--color-blue-500);
-  --side-navigation-bar-item__color: var(--color-slate-700);
+  --side-navigation-bar-item__bg-active-color: var(--p--500);
+  --side-navigation-bar-item__color: var(--p-slate-700);
   --side-navigation-bar-item__active-color: var(--color-white);
 
   background-color: var(--side-navigation-bar-item__bg-color);

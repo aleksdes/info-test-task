@@ -33,7 +33,7 @@ const styles = useCssModule()
   }
 
   &__empty-state {
-    background: var(--color-zinc-100);
+    background: var(--p-zinc-100);
     border-radius: var(--radius-2xl);
     display: flex;
     justify-content: center;

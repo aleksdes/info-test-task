@@ -70,13 +70,17 @@ const sharedState: SideNavigationBarItemState = {
       :title="dataRoute.label"
       class="flex items-center group"
     >
-      <span v-if="!!$slots.icon" :class="styles['side-navigation-bar-item__icon']">
+      <span
+        v-if="!!$slots.icon"
+        :class="styles['side-navigation-bar-item__icon']"
+      >
         <slot name="icon" v-bind="sharedState" />
       </span>
 
       <i
         v-else-if="dataRoute.icon && typeof dataRoute.icon === 'string'"
-        class="text-base shrink-0" :class="[styles['side-navigation-bar-item__icon'], dataRoute.icon]"
+        class="text-base shrink-0"
+        :class="[styles['side-navigation-bar-item__icon'], dataRoute.icon]"
       />
 
       <component
@@ -99,8 +103,8 @@ const sharedState: SideNavigationBarItemState = {
 .side-navigation-bar-item {
   --icon-size: 18px;
   --side-navigation-bar-item__bg-color: transparent;
-  --side-navigation-bar-item__bg-active-color: color-mix(in srgb, var(--color-blue-500) 20%, transparent);
-  --side-navigation-bar-item__color: var(--color-slate-700);
+  --side-navigation-bar-item__bg-active-color: color-mix(in srgb, var(--p-blue-500) 20%, transparent);
+  --side-navigation-bar-item__color: var(--p-slate-700);
   --side-navigation-bar-item__active-color: var(--color-white);
 
   background-color: var(--side-navigation-bar-item__bg-color);
@@ -124,7 +128,7 @@ const sharedState: SideNavigationBarItemState = {
   }
 
   &:hover:not(&--active) {
-    --side-navigation-bar-item__bg-color: color-mix(in srgb, var(--color-blue-500) 10%, transparent);
+    --side-navigation-bar-item__bg-color: color-mix(in srgb, var(--p-blue-500) 10%, transparent);
   }
 
   &:active {

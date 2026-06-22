@@ -114,7 +114,7 @@ function onNodeDragStop(data: NodeDragEvent) {
 .workflow-schema-wrapper {
   height: 100%;
   width: 100%;
-  background-color: #f9f9f9;
+  background-color: var(--p-surface-100);
   border-radius: pxToRem(8px);
   border: 1px solid #eaeaea;
   overflow: hidden;

@@ -136,7 +136,7 @@ async function sendForm() {
       :validation-schema="validationSchema"
       @submit="sendForm"
     >
-      <div class="add-step-modal__box-fields">
+      <div class="mt-2">
         <Field
           v-slot="{ errors, field }"
           v-model="state.name"
@@ -198,5 +198,4 @@ async function sendForm() {
 </template>
 
 <style lang="scss" module>
-
 </style>

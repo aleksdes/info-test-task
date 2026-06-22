@@ -39,6 +39,7 @@ async function onRemoveStep() {
       aria-label="Удалить состояние"
       title="Удалить состояние"
       label=""
+      class="min-w-[32px] w-[32px] h-[32px] p-0"
       @click="onRemoveStep"
     >
       <template #icon>
