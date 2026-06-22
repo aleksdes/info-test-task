@@ -21,7 +21,7 @@ const endPoint = computed(() => {
   const height = targetNode?.dimensions?.height
   const cp = targetNode?.computedPosition
 
-  if (!width || !height || !cp || !isFinite(cp.x)) {
+  if (!width || !height || !cp || !Number.isFinite(cp.x)) {
     return offsetFrom(sourceX, sourceY, props.targetX, props.targetY, PULL_BACK)
   }
 
@@ -48,31 +48,37 @@ const endPoint = computed(() => {
 
   function check(x: number, y: number, t: number) {
     if (t > 0 && t < bestT) {
-      ix = x; iy = y; bestT = t
+      ix = x
+      iy = y
+      bestT = t
     }
   }
 
   if (dx !== 0) {
     const tL = (left - sourceX) / dx
     const yL = sourceY + tL * dy
-    if (yL >= top && yL <= bottom + 0.5) check(left, yL, tL)
+    if (yL >= top && yL <= bottom + 0.5)
+      check(left, yL, tL)
 
     const tR = (right - sourceX) / dx
     const yR = sourceY + tR * dy
-    if (yR >= top - 0.5 && yR <= bottom) check(right, yR, tR)
+    if (yR >= top - 0.5 && yR <= bottom)
+      check(right, yR, tR)
   }
 
   if (dy !== 0) {
     const tT = (top - sourceY) / dy
     const xT = sourceX + tT * dx
-    if (xT >= left && xT <= right + 0.5) check(xT, top, tT)
+    if (xT >= left && xT <= right + 0.5)
+      check(xT, top, tT)
 
     const tB = (bottom - sourceY) / dy
     const xB = sourceX + tB * dx
-    if (xB >= left - 0.5 && xB <= right) check(xB, bottom, tB)
+    if (xB >= left - 0.5 && xB <= right)
+      check(xB, bottom, tB)
   }
 
-  if (!isFinite(bestT)) {
+  if (!Number.isFinite(bestT)) {
     return offsetFrom(sourceX, sourceY, props.targetX, props.targetY, PULL_BACK)
   }
 
@@ -83,7 +89,8 @@ function offsetFrom(ox: number, oy: number, tx: number, ty: number, dist: number
   const dx = tx - ox
   const dy = ty - oy
   const len = Math.sqrt(dx * dx + dy * dy)
-  if (len <= dist + 0.1) return { x: tx, y: ty }
+  if (len <= dist + 0.1)
+    return { x: tx, y: ty }
   const ratio = (len - dist) / len
   return { x: ox + dx * ratio, y: oy + dy * ratio }
 }
