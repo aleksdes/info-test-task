@@ -5,19 +5,14 @@ Monorepo с бэкендом (Express + TypeScript) и фронтендом (Vue
 ## Разворачивание
 
 ```bash
-# 1. Установка зависимостей
+# Быстрый старт (делает всё сразу)
+make setup
+
+# Или пошагово:
 pnpm install
-
-# 2. Скопировать .env.example в .env
 cp .env.example .env
-
-# 3. Собрать бэкенд
 pnpm build:backend
-
-# 4. Сгенерировать API-хелперы для фронтенда
 pnpm generate-api:frontend
-
-# 5. Запустить dev-режим (бэкенд + фронтенд одновременно)
 pnpm dev
 ```
 
