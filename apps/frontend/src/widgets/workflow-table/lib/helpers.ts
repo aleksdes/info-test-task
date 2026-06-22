@@ -12,13 +12,8 @@ export function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
     })
   })
 
-  const rootNode = steps.find(node => !hasIncoming.has(node.initialIndex))
+  const rootNodes = steps.filter(node => !hasIncoming.has(node.initialIndex) && node.nextSteps.length)
   const nodesWithoutConnections = steps.filter(node => !hasIncoming.has(node.initialIndex) && !node.nextSteps.length)
-
-  if (!rootNode) {
-    console.warn('Корневой узел не найден')
-    return []
-  }
 
   const visited = new Set<number>()
   const result: WorkflowStep[] = []
@@ -43,7 +38,9 @@ export function buildStepsTable(steps: WorkflowStep[]): WorkflowStep[] {
     }
   }
 
-  dfs(rootNode.initialIndex)
+  for (const root of rootNodes.reverse()) {
+    dfs(root.initialIndex)
+  }
 
   return [...result, ...nodesWithoutConnections]
 }

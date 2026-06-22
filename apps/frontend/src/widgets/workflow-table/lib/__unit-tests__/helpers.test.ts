@@ -15,11 +15,10 @@ describe('buildStepsTable', () => {
     expect(buildStepsTable([])).toEqual([])
   })
 
-  it('returns single step with no connections (duplicated: DFS + orphans)', () => {
+  it('returns single step with no connections as orphan', () => {
     const steps = [step(0, [])]
     const result = buildStepsTable(steps)
-    expect(result.length).toBe(2)
-    expect(result.map(s => s.initialIndex)).toEqual([0, 0])
+    expect(result).toEqual([step(0, [])])
   })
 
   it('orders linear chain correctly', () => {
@@ -58,6 +57,12 @@ describe('buildStepsTable', () => {
     expect(result[0].initialIndex).toBe(0)
     const allIndexes = result.map(s => s.initialIndex).sort((a, b) => a - b)
     expect(allIndexes).toEqual([0, 1, 2, 3])
+  })
+
+  it('handles multiple root nodes', () => {
+    const steps = [step(0, [2]), step(1, [3]), step(2, []), step(3, [])]
+    const result = buildStepsTable(steps)
+    expect(result.map(s => s.initialIndex)).toEqual([0, 2, 1, 3])
   })
 
   it('returns empty array for circular graph (no root)', () => {
