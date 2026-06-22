@@ -28,11 +28,8 @@ function stepNext(index: number): WorkflowStep | null {
   return step
 }
 
-const {
-  wrapperRef,
-  measureTransitions,
-  setupObserver,
-} = useMeasureTransitions()
+// @ts-expect-error wrapperRef используется в шаблоне как ref="wrapperRef"
+const { wrapperRef, measureTransitions, setupObserver } = useMeasureTransitions()
 
 onMounted(() => {
   requestAnimationFrame(() => {
